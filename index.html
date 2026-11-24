@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>钱往上流 · 你在第几层 | 分层与破局的底层逻辑</title>
+<meta name="description" content="社会运转的六层金字塔、四种命运、三把锁与三条破局路径。钱从下往上回流，多数人卡在第五六层。作者 911" />
+<style>
+:root{
+  --bg:#0a0806; --bg-2:#100c07;
+  --line:rgba(212,175,55,.14); --line-2:rgba(212,175,55,.30); --line-3:rgba(212,175,55,.55);
+  --gold-1:#fbf0c9; --gold-2:#e6c877; --gold-3:#c8a548; --gold-4:#9a7b2c; --gold-5:#6b5220;
+  --txt:#efe7d7; --dim:#aca291; --mute:#79705f;
+  --up:#cf5b45; --down:#57a883; --warn:#e0913f;
+  --serif:'Songti SC','STSong','Noto Serif CJK SC','Source Han Serif SC','SimSun',Georgia,serif;
+  --sans:-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC',sans-serif;
+  --mono:'SF Mono','JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--txt);font-family:var(--sans);font-size:16px;line-height:1.85;-webkit-font-smoothing:antialiased;overflow-x:hidden;position:relative;}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:
+  radial-gradient(900px 520px at 78% -6%, rgba(200,165,72,.13), transparent 62%),
+  radial-gradient(760px 460px at 6% 12%, rgba(120,90,30,.10), transparent 60%),
+  radial-gradient(1100px 700px at 50% 108%, rgba(150,115,40,.09), transparent 62%);}
+body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.22;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");mix-blend-mode:overlay;}
+::selection{background:rgba(200,165,72,.3);color:#fff8e2;}
+.glow-follow{position:fixed;width:520px;height:520px;left:0;top:0;z-index:2;pointer-events:none;background:radial-gradient(circle, rgba(226,190,110,.10), rgba(200,165,72,.045) 42%, transparent 68%);transform:translate(-50%,-50%);opacity:0;mix-blend-mode:screen;filter:blur(6px);}
+@media (hover:hover){ .glow-follow{opacity:1;} }
+
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:18px clamp(18px,4vw,54px);transition:background .5s var(--ease),backdrop-filter .5s,border-color .5s,padding .5s;border-bottom:1px solid transparent;}
+.nav.solid{background:rgba(10,8,6,.82);backdrop-filter:blur(16px) saturate(1.2);border-bottom:1px solid var(--line);padding:12px clamp(18px,4vw,54px);}
+.nav-logo{font-family:var(--mono);font-size:12px;letter-spacing:.34em;text-transform:uppercase;color:var(--gold-2);display:flex;align-items:center;gap:10px;white-space:nowrap;}
+.nav-logo i{width:7px;height:7px;background:var(--gold-3);border-radius:50%;box-shadow:0 0 12px var(--gold-3);animation:pulseDot 2.6s infinite;}
+@keyframes pulseDot{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.35;transform:scale(.7);}}
+.nav-links{display:flex;gap:clamp(12px,2vw,30px);}
+.nav-links a{font-size:12.5px;letter-spacing:.1em;color:var(--dim);text-decoration:none;position:relative;padding:4px 0;transition:color .35s;}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:0;background:linear-gradient(90deg,var(--gold-3),var(--gold-1));transition:width .4s var(--ease);}
+.nav-links a:hover{color:var(--gold-1);}
+.nav-links a:hover::after{width:100%;}
+@media(max-width:900px){.nav-links{display:none;}}
+
+.wrap{position:relative;z-index:3;max-width:1180px;margin:0 auto;padding:0 clamp(18px,4vw,32px);}
+section{position:relative;z-index:3;padding:clamp(70px,9vw,128px) 0;}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--gold-3);display:flex;align-items:center;gap:14px;margin-bottom:22px;}
+.eyebrow::before{content:"";width:34px;height:1px;background:linear-gradient(90deg,transparent,var(--gold-3));}
+h2.title{font-family:var(--serif);font-weight:600;font-size:clamp(27px,3.9vw,45px);line-height:1.32;margin-bottom:20px;}
+h2.title em{font-style:normal;background:linear-gradient(100deg,var(--gold-3) 0%,var(--gold-1) 30%,#fff8e0 48%,var(--gold-2) 66%,var(--gold-4) 100%);background-size:220% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 7s linear infinite;}
+@keyframes shimmer{to{background-position:220% center;}}
+.lede{font-size:clamp(15px,1.5vw,17.5px);color:var(--dim);max-width:74ch;line-height:1.92;}
+.lede strong{color:var(--gold-2);font-weight:500;}
+
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 1s var(--ease),transform 1s var(--ease);}
+.reveal.in{opacity:1;transform:none;}
+.reveal[data-d="1"]{transition-delay:.09s;} .reveal[data-d="2"]{transition-delay:.18s;}
+.reveal[data-d="3"]{transition-delay:.27s;} .reveal[data-d="4"]{transition-delay:.36s;}
+.reveal[data-d="5"]{transition-delay:.45s;} .reveal[data-d="6"]{transition-delay:.54s;}
+
+.card{position:relative;background:linear-gradient(158deg,rgba(40,32,19,.62),rgba(15,12,8,.82));border:1px solid var(--line);border-radius:6px;padding:clamp(20px,2.6vw,32px);overflow:hidden;transition:border-color .5s var(--ease),transform .5s var(--ease),box-shadow .5s var(--ease);}
+.card::before{content:"";position:absolute;inset:0;border-radius:6px;pointer-events:none;background:linear-gradient(180deg,rgba(251,240,201,.07),transparent 34%);}
+.card::after{content:"";position:absolute;left:0;top:0;width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(230,200,119,.55),transparent);opacity:.5;transition:opacity .5s;}
+.card:hover{border-color:var(--line-2);box-shadow:0 22px 60px -28px rgba(0,0,0,.9);}
+.card:hover::after{opacity:1;}
+
+/* ============ HERO ============ */
+.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding-top:120px;padding-bottom:80px;position:relative;overflow:hidden;}
+#field{position:absolute;inset:0;z-index:2;width:100%;height:100%;}
+.hero-veil{position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(ellipse 78% 62% at 50% 46%, transparent 30%, rgba(10,8,6,.55) 78%, var(--bg) 100%);}
+.hero-inner{position:relative;z-index:4;max-width:1180px;margin:0 auto;padding:0 clamp(18px,4vw,32px);width:100%;}
+.hero-tag{display:inline-flex;align-items:center;gap:10px;margin-bottom:34px;padding:7px 16px 7px 12px;border:1px solid var(--line-2);border-radius:100px;font-family:var(--mono);font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold-2);background:rgba(200,165,72,.05);backdrop-filter:blur(6px);opacity:0;animation:fadeUp 1s .15s var(--ease) forwards;}
+.hero-tag s{text-decoration:none;color:var(--mute);letter-spacing:.18em;}
+.hero h1{font-family:var(--serif);font-weight:600;font-size:clamp(34px,6.4vw,78px);line-height:1.16;margin-bottom:8px;opacity:0;animation:fadeUp 1.2s .28s var(--ease) forwards;}
+.hero h1 .g{background:linear-gradient(96deg,#8a6b23 0%,var(--gold-1) 24%,#fffaea 44%,var(--gold-2) 60%,#a8842f 84%,#7a5e1c 100%);background-size:220% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 9s linear infinite;}
+.hero h1 .thin{display:block;color:var(--dim);font-size:.52em;letter-spacing:.05em;margin-top:14px;font-weight:400;}
+.hero-sub{margin-top:30px;max-width:60ch;font-size:clamp(14.5px,1.6vw,18px);color:var(--dim);line-height:1.9;opacity:0;animation:fadeUp 1.1s .46s var(--ease) forwards;}
+.hero-sub b{color:var(--gold-2);font-weight:500;}
+.hero-kpis{display:flex;flex-wrap:wrap;gap:0;margin-top:clamp(38px,5vw,60px);border-top:1px solid var(--line);border-bottom:1px solid var(--line);opacity:0;animation:fadeUp 1.1s .62s var(--ease) forwards;}
+.kpi{flex:1 1 170px;padding:22px 26px 22px 0;min-width:150px;border-right:1px solid var(--line);}
+.kpi:last-child{border-right:none;}
+.kpi-num{font-family:var(--mono);font-size:clamp(22px,2.6vw,30px);color:var(--gold-1);letter-spacing:.02em;line-height:1.2;display:flex;align-items:baseline;gap:3px;}
+.kpi-num u{text-decoration:none;font-size:.52em;color:var(--gold-4);letter-spacing:.1em;}
+.kpi-lbl{font-size:11.5px;letter-spacing:.16em;color:var(--mute);margin-top:9px;text-transform:uppercase;font-family:var(--mono);}
+.scroll-hint{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);z-index:5;display:flex;flex-direction:column;align-items:center;gap:10px;font-family:var(--mono);font-size:9.5px;letter-spacing:.32em;color:var(--mute);text-transform:uppercase;opacity:0;animation:fadeIn 1.4s 1.4s forwards;}
+.scroll-hint span{width:1px;height:44px;background:linear-gradient(180deg,var(--gold-3),transparent);position:relative;overflow:hidden;}
+.scroll-hint span::after{content:"";position:absolute;top:-44px;left:0;width:1px;height:44px;background:linear-gradient(180deg,transparent,var(--gold-1));animation:drop 2.4s infinite;}
+@keyframes drop{0%{top:-44px;}70%,100%{top:44px;}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(26px);}to{opacity:1;transform:none;}}
+@keyframes fadeIn{to{opacity:1;}}
+
+/* ============ 金字塔 ============ */
+.py-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(20px,3vw,44px);margin-top:52px;align-items:start;}
+@media(max-width:880px){.py-grid{grid-template-columns:1fr;}}
+.py-fig{position:relative;}
+.py-fig svg{width:100%;height:auto;display:block;}
+.py-layer{cursor:pointer;transition:filter .4s,opacity .4s;}
+.py-layer polygon{transition:fill .4s,filter .4s;}
+.py-layer text{font-family:var(--serif);letter-spacing:.14em;pointer-events:none;}
+.py-layer .sub{font-family:var(--mono);font-size:10px;letter-spacing:.16em;opacity:.75;}
+.py-layer.hl polygon{filter:drop-shadow(0 0 14px rgba(230,200,119,.55)) brightness(1.18);}
+.py-layer.dim{opacity:.42;}
+.you-frame{fill:none;stroke:var(--warn);stroke-width:1;stroke-dasharray:5 4;opacity:.8;}
+.you-tag{font-family:var(--mono);font-size:11px;letter-spacing:.2em;fill:var(--warn);}
+.py-fig .py-layer{opacity:0;transition:opacity .8s var(--ease);}
+.py-fig.in .py-layer{opacity:1;}
+.py-fig.in g.py-layer:nth-of-type(1){transition-delay:.05s;}
+.py-fig.in g.py-layer:nth-of-type(2){transition-delay:.15s;}
+.py-fig.in g.py-layer:nth-of-type(3){transition-delay:.25s;}
+.py-fig.in g.py-layer:nth-of-type(4){transition-delay:.35s;}
+.py-fig.in g.py-layer:nth-of-type(5){transition-delay:.45s;}
+.py-fig.in g.py-layer:nth-of-type(6){transition-delay:.55s;}
+.money-flow{stroke:var(--gold-4);stroke-width:1.2;fill:none;}
+.money-flow-anim{stroke-dasharray:3 7;animation:dashUp 2.2s linear infinite;stroke:var(--gold-2);}
+@keyframes dashUp{to{stroke-dashoffset:-40;}}
+.flow-lbl{font-family:var(--mono);font-size:11px;letter-spacing:.3em;fill:var(--gold-3);}
+.py-legend{display:flex;flex-direction:column;gap:8px;}
+.lg-row{display:flex;align-items:center;gap:14px;padding:13px 16px;border:1px solid transparent;border-radius:5px;background:rgba(255,255,255,.018);cursor:pointer;transition:all .4s var(--ease);}
+.lg-row .lv{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--gold-4);width:34px;flex:none;}
+.lg-row .nm{font-family:var(--serif);font-size:15.5px;color:var(--txt);width:92px;flex:none;letter-spacing:.06em;}
+.lg-row .how{font-size:13px;color:var(--dim);flex:1;line-height:1.6;}
+.lg-row:hover,.lg-row.hl{border-color:var(--line-2);background:rgba(200,165,72,.09);}
+.lg-row:hover .nm,.lg-row.hl .nm{color:var(--gold-1);}
+.lg-row .chip{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;padding:2px 7px;border-radius:3px;flex:none;}
+.chip.g{color:var(--gold-2);border:1px solid var(--line-2);background:rgba(200,165,72,.08);}
+.chip.r{color:var(--warn);border:1px solid rgba(224,145,63,.4);background:rgba(224,145,63,.08);}
+.py-note{margin-top:26px;font-size:12px;color:var(--mute);font-family:var(--mono);letter-spacing:.08em;}
+
+/* ============ 四种命运 ============ */
+.dist{margin-top:52px;}
+.dist-bar{display:flex;height:46px;border-radius:5px;overflow:hidden;border:1px solid var(--line-2);}
+.dist-seg{position:relative;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;color:#14100a;width:0;transition:width 1.5s var(--ease);white-space:nowrap;overflow:hidden;}
+.dist-seg.s1{background:linear-gradient(100deg,var(--gold-1),var(--gold-2));}
+.dist-seg.s2{background:linear-gradient(100deg,var(--gold-4),var(--gold-3));color:var(--gold-1);}
+.dist-seg.s3{background:#211b12;color:var(--mute);}
+.dist-scale{display:flex;justify-content:space-between;margin-top:10px;font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--mute);}
+.fates{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:34px;}
+.fate{padding:24px 24px 20px;border:1px solid var(--line);border-radius:6px;background:linear-gradient(165deg,rgba(28,22,13,.72),rgba(11,9,6,.85));position:relative;overflow:hidden;transition:border-color .45s,transform .45s;}
+.fate:hover{border-color:var(--line-2);transform:translateY(-3px);}
+.fate .fk{font-family:var(--mono);font-size:10px;letter-spacing:.22em;color:var(--gold-4);text-transform:uppercase;}
+.fate .fn{font-family:var(--serif);font-size:20px;color:var(--gold-1);margin:10px 0 4px;letter-spacing:.05em;}
+.fate .fm{font-family:var(--mono);font-size:11.5px;color:var(--gold-3);letter-spacing:.08em;margin-bottom:14px;}
+.fate .fd{font-size:13.5px;color:var(--dim);line-height:1.8;}
+.fate .fd b{color:var(--gold-2);font-weight:500;}
+.fate.stable::after{content:"";position:absolute;top:0;right:0;width:90px;height:90px;background:radial-gradient(circle at 100% 0,rgba(230,200,119,.16),transparent 70%);}
+.fate .fmark{position:absolute;top:16px;right:18px;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:var(--mute);}
+
+/* ============ 流程图通用 ============ */
+.flow-wrap{margin-top:52px;border:1px solid var(--line);border-radius:8px;background:linear-gradient(160deg,rgba(30,24,14,.66),rgba(12,10,7,.9));overflow:hidden;}
+.flow-head{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:18px 26px;border-bottom:1px solid var(--line);background:linear-gradient(90deg,rgba(200,165,72,.07),transparent 60%);}
+.flow-head h3{font-family:var(--serif);font-size:16px;letter-spacing:.06em;color:var(--gold-1);font-weight:600;}
+.flow-head .tag{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-4);border:1px solid var(--line-2);padding:4px 10px;border-radius:100px;}
+.flow-scroll{overflow-x:auto;padding:clamp(18px,3vw,34px);}
+.flow-scroll svg{min-width:880px;width:100%;height:auto;display:block;}
+.fnode rect{fill:rgba(30,24,14,.9);stroke:var(--line-2);stroke-width:1;transition:stroke .4s,filter .4s;}
+.fnode:hover rect{stroke:var(--gold-2);filter:drop-shadow(0 0 10px rgba(230,200,119,.3));}
+.fnode text{fill:var(--txt);font-size:13.5px;font-family:var(--sans);text-anchor:middle;}
+.fnode .sub{font-size:10.5px;fill:var(--mute);font-family:var(--mono);}
+.fnode.root rect{fill:rgba(200,165,72,.14);stroke:var(--gold-3);}
+.fnode.root text{fill:var(--gold-1);font-family:var(--serif);font-size:16px;letter-spacing:.08em;}
+.fnode.head rect{fill:rgba(200,165,72,.10);stroke:var(--gold-4);}
+.fnode.head text{fill:var(--gold-1);font-family:var(--serif);font-size:15.5px;letter-spacing:.06em;}
+.fnode.ax rect{stroke:var(--warn);}
+.fnode.ax text{fill:#f3d3ab;}
+.flink{stroke:var(--gold-4);stroke-width:1.3;fill:none;stroke-dasharray:220;stroke-dashoffset:220;transition:stroke-dashoffset 1.2s var(--ease);}
+.flow-wrap.in .flink{stroke-dashoffset:0;}
+.flink.d1{transition-delay:.15s;} .flink.d2{transition-delay:.3s;} .flink.d3{transition-delay:.45s;}
+.farrow{fill:var(--gold-3);}
+.fl-mark{opacity:0;transform:translateY(8px);transition:opacity .8s var(--ease),transform .8s var(--ease);}
+.flow-wrap.in .fl-mark{opacity:1;transform:none;}
+.flow-wrap.in .fl-mark.m1{transition-delay:.3s;} .flow-wrap.in .fl-mark.m2{transition-delay:.5s;}
+.flow-wrap.in .fl-mark.m3{transition-delay:.7s;} .flow-wrap.in .fl-mark.m4{transition-delay:.9s;}
+.flow-note{padding:14px 26px 20px;font-size:12px;color:var(--mute);font-family:var(--mono);letter-spacing:.06em;border-top:1px solid var(--line);}
+
+/* ============ 三把锁 ============ */
+.locks{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:52px;}
+@media(max-width:880px){.locks{grid-template-columns:1fr;}}
+.lock-card{padding:26px 26px 24px;border:1px solid var(--line);border-radius:6px;background:linear-gradient(165deg,rgba(28,22,13,.72),rgba(11,9,6,.85));position:relative;overflow:hidden;}
+.lock-ico{width:64px;height:64px;margin-bottom:18px;}
+.lock-ico .shackle{fill:none;stroke:var(--gold-2);stroke-width:3;stroke-linecap:round;transform-box:fill-box;transform-origin:right bottom;transition:transform 1.2s var(--ease),stroke .6s;}
+.lock-ico .body{fill:rgba(200,165,72,.12);stroke:var(--gold-3);stroke-width:1.5;}
+.lock-ico .hole{fill:var(--gold-4);}
+.lock-card.in .shackle{transform:translateX(7px) rotate(24deg);stroke:var(--warn);}
+.lk-name{font-family:var(--serif);font-size:20px;color:var(--gold-1);letter-spacing:.06em;margin-bottom:8px;}
+.lk-desc{font-size:13.5px;color:var(--dim);line-height:1.8;margin-bottom:18px;}
+.lk-desc b{color:var(--gold-2);font-weight:500;}
+.lk-cut{
+  display:flex;align-items:center;gap:10px;padding:13px 16px;border:1px dashed var(--line-2);border-radius:5px;
+  font-size:13.5px;color:#f3d3ab;background:rgba(224,145,63,.06);
+}
+.lk-cut .ax{flex:none;color:var(--warn);}
+.lk-cut b{color:var(--warn);font-weight:500;}
+.lock-arrow{display:flex;justify-content:center;color:var(--gold-4);margin:10px 0 0;font-family:var(--mono);font-size:10px;letter-spacing:.3em;}
+
+/* ============ 飞轮 ============ */
+.fw2-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,3vw,44px);margin-top:52px;align-items:center;}
+@media(max-width:880px){.fw2-grid{grid-template-columns:1fr;}}
+.fw2-fig svg{width:100%;max-width:420px;height:auto;display:block;margin:0 auto;}
+.wheel-dash{fill:none;stroke:var(--gold-4);stroke-width:1;stroke-dasharray:4 8;animation:spinDash 26s linear infinite;transform-origin:center;transform-box:fill-box;}
+@keyframes spinDash{to{transform:rotate(360deg);}}
+.wheel-node circle{fill:rgba(30,24,14,.95);stroke:var(--gold-3);stroke-width:1.2;}
+.wheel-node text{fill:var(--gold-1);font-size:13px;font-family:var(--sans);text-anchor:middle;letter-spacing:.06em;}
+.wheel-center text{fill:var(--gold-2);font-family:var(--serif);text-anchor:middle;letter-spacing:.2em;}
+.principles{display:flex;flex-direction:column;gap:14px;}
+.pr{display:flex;gap:14px;padding:18px 20px;border:1px solid var(--line);border-radius:5px;background:rgba(255,255,255,.018);transition:border-color .4s,transform .4s;}
+.pr:hover{border-color:var(--line-2);transform:translateX(4px);}
+.pr .no{font-family:var(--mono);font-size:11px;color:var(--gold-4);letter-spacing:.1em;flex:none;margin-top:4px;}
+.pr .pt{font-size:14.5px;color:var(--txt);line-height:1.7;}
+.pr .pt b{color:var(--gold-2);font-weight:500;}
+.pr .pt small{display:block;font-size:12.5px;color:var(--mute);margin-top:3px;}
+
+/* ============ 引用/页脚 ============ */
+.quote-sec{padding:clamp(80px,11vw,150px) 0;position:relative;text-align:center;}
+.quote-sec::before{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(760px,92vw);height:min(760px,92vw);border-radius:50%;background:radial-gradient(circle,rgba(200,165,72,.10),transparent 62%);pointer-events:none;}
+.quote-mark{font-family:var(--serif);font-size:90px;line-height:.4;color:var(--gold-5);margin-bottom:34px;display:block;}
+blockquote{font-family:var(--serif);font-size:clamp(21px,3.4vw,38px);line-height:1.62;color:var(--gold-1);max-width:26ch;margin:0 auto;letter-spacing:.02em;position:relative;z-index:2;}
+blockquote em{font-style:normal;background:linear-gradient(100deg,var(--gold-2),#fff8e0,var(--gold-3));background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 6s linear infinite;}
+.quote-by{margin-top:36px;font-family:var(--mono);font-size:11px;letter-spacing:.3em;color:var(--gold-4);text-transform:uppercase;}
+footer{position:relative;z-index:3;border-top:1px solid var(--line);padding:clamp(46px,6vw,74px) 0 44px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.5));}
+.foot-top{display:flex;justify-content:space-between;gap:32px;flex-wrap:wrap;align-items:flex-end;}
+.foot-author{font-family:var(--serif);font-size:clamp(30px,5vw,54px);line-height:1;background:linear-gradient(100deg,var(--gold-4),var(--gold-1),var(--gold-3));background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 8s linear infinite;letter-spacing:.06em;}
+.foot-lbl{font-family:var(--mono);font-size:10px;letter-spacing:.3em;color:var(--mute);text-transform:uppercase;margin-bottom:14px;}
+.foot-meta{font-size:12.5px;color:var(--mute);line-height:1.9;max-width:52ch;text-align:right;}
+@media(max-width:700px){.foot-meta{text-align:left;}}
+.foot-div{height:1px;background:linear-gradient(90deg,transparent,var(--line-2),transparent);margin:44px 0 24px;}
+.foot-bottom{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:#4d4639;text-transform:uppercase;}
+.progress{position:fixed;top:0;left:0;height:2px;width:0;z-index:60;background:linear-gradient(90deg,var(--gold-4),var(--gold-1));box-shadow:0 0 12px rgba(230,200,119,.5);}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;}.reveal{opacity:1;transform:none;}}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<div class="glow-follow" id="glow"></div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <marker id="arr" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0,0 L7,3.5 L0,7 Z" fill="#c8a548"/>
+    </marker>
+  </defs>
+</svg>
+
+<nav class="nav" id="nav">
+  <div class="nav-logo"><i></i>Wealth&nbsp;Ladder&nbsp;·&nbsp;911</div>
+  <div class="nav-links">
+    <a href="#pyramid">金字塔</a>
+    <a href="#fates">四种命运</a>
+    <a href="#locks">三把锁</a>
+    <a href="#paths">三条路</a>
+    <a href="#compound">飞轮</a>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <canvas id="field"></canvas>
+  <div class="hero-veil"></div>
+  <div class="hero-inner">
+    <div class="hero-tag">Wealth Ladder <s>/</s> Unlock &amp; Compound</div>
+    <h1>
+      <span class="g">钱，永远往上流</span>
+      <span class="thin">而多数人，卡在第五、六层</span>
+    </h1>
+    <p class="hero-sub">
+      顶层靠<b>资本与稀缺</b>印钞，中层靠<b>平台与品牌</b>抽成，底层靠<b>技能与劳动力</b>卖时间。
+      这篇文章只用一张金字塔、三把锁、三条路，讲清楚一件事：<b>破层靠解锁和积累，不靠空喊努力。</b>
+    </p>
+    <div class="hero-kpis">
+      <div class="kpi">
+        <div class="kpi-num"><span data-count="6">0</span><u>层</u></div>
+        <div class="kpi-lbl">社会运转金字塔</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-num">≈<span data-count="10">0</span><u>%</u></div>
+        <div class="kpi-lbl">卖成果的价值创造者</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-num">&gt;<span data-count="85">0</span><u>%</u></div>
+        <div class="kpi-lbl">卖时间 · 可被替代</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-num"><span data-count="3">0</span><u>条路</u></div>
+        <div class="kpi-lbl">砍锁之后的破局路径</div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint"><span></span>Scroll</div>
+</header>
+
+<!-- ================= 金字塔 ================= -->
+<section id="pyramid">
+  <div class="wrap">
+    <div class="eyebrow reveal">01 / The Pyramid</div>
+    <h2 class="title reveal" data-d="1">六层金字塔 · <em>钱从下往上回流</em></h2>
+    <p class="lede reveal" data-d="2">
+      判断你在哪一层，只看一个问题：<strong>你的钱，靠什么进来？</strong>
+      越往上，钱越不依赖你本人的时间；越往下，收入与时间完全绑定。鼠标移上去，看每一层怎么赚钱。
+    </p>
+
+    <div class="py-grid">
+      <div class="py-fig reveal" data-d="2" id="pyFig">
+        <svg viewBox="0 0 600 404" role="img" aria-label="六层金字塔">
+          <!-- 钱流：从底往上 -->
+          <path class="money-flow" d="M12,398 L12,26"/>
+          <path class="money-flow money-flow-anim" d="M12,398 L12,26"/>
+          <path d="M4,32 L12,18 L20,32" class="money-flow"/>
+          <text class="flow-lbl" transform="rotate(-90 30 210)" x="30" y="210" text-anchor="middle">钱 · 向上回流</text>
+          <circle r="3" fill="#fbf0c9">
+            <animateMotion dur="3s" repeatCount="indefinite" path="M12,398 L12,26"/>
+          </circle>
+          <circle r="3" fill="#e6c877" opacity=".8">
+            <animateMotion dur="3s" begin="1.5s" repeatCount="indefinite" path="M12,398 L12,26"/>
+          </circle>
+
+          <g class="py-layer" data-l="l1">
+            <polygon points="250,6 350,6 388.35,68 211.65,68" fill="#f7e6b0"/>
+            <text x="300" y="44" text-anchor="middle" font-size="15" fill="#14100a">资本</text>
+          </g>
+          <g class="py-layer" data-l="l2">
+            <polygon points="211.65,72 388.35,72 426.7,134 173.3,134" fill="#dcbc5f"/>
+            <text x="300" y="110" text-anchor="middle" font-size="14" fill="#14100a">资源 · 牌照</text>
+          </g>
+          <g class="py-layer" data-l="l3">
+            <polygon points="173.3,138 426.7,138 465,200 135,200" fill="#b3923e"/>
+            <text x="300" y="176" text-anchor="middle" font-size="14" fill="#14100a">平台</text>
+          </g>
+          <g class="py-layer" data-l="l4">
+            <polygon points="135,204 465,204 503.35,266 96.65,266" fill="#8a6f2f"/>
+            <text x="300" y="242" text-anchor="middle" font-size="14" fill="#fbf0c9">品牌</text>
+          </g>
+          <g class="py-layer" data-l="l5">
+            <polygon points="96.65,270 503.35,270 541.7,332 58.3,332" fill="#5a4922" stroke="rgba(224,145,63,.5)"/>
+            <text x="300" y="308" text-anchor="middle" font-size="14" fill="#e6d3a4">技能</text>
+            <text x="418" y="322" text-anchor="middle" font-size="10" fill="#e0913f" font-family="var(--mono)">▲ 约10%</text>
+          </g>
+          <g class="py-layer" data-l="l6">
+            <polygon points="58.3,336 541.7,336 580,398 20,398" fill="#393017" stroke="rgba(224,145,63,.5)"/>
+            <text x="300" y="374" text-anchor="middle" font-size="14" fill="#d8cba8">劳动力</text>
+            <text x="432" y="388" text-anchor="middle" font-size="10" fill="#e0913f" font-family="var(--mono)">▲ 超85%</text>
+          </g>
+        </svg>
+      </div>
+
+      <div class="py-legend reveal" data-d="3">
+        <div class="lg-row" data-l="l6"><span class="lv">L6</span><span class="nm">劳动力</span><span class="how">卖时间，收入 = 时薪 × 时长，一天 24 小时封顶</span><span class="chip r">可替代</span></div>
+        <div class="lg-row" data-l="l5"><span class="lv">L5</span><span class="nm">技能</span><span class="how">卖成果，或把技能产品化——这是普通人唯一的跳板</span><span class="chip r">有上限</span></div>
+        <div class="lg-row" data-l="l4"><span class="lv">L4</span><span class="nm">品牌</span><span class="how">收信任溢价，别人愿意为"是你"多付钱</span><span class="chip g">定价权</span></div>
+        <div class="lg-row" data-l="l3"><span class="lv">L3</span><span class="nm">平台</span><span class="how">建网络抽成，每一笔交易都留下一点</span><span class="chip g">抽成</span></div>
+        <div class="lg-row" data-l="l2"><span class="lv">L2</span><span class="nm">资源</span><span class="how">持稀缺牌照与独占资源，稀缺本身即印钞</span><span class="chip g">稀缺</span></div>
+        <div class="lg-row" data-l="l1"><span class="lv">L1</span><span class="nm">资本</span><span class="how">钱生钱，收益不经过任何人的劳动</span><span class="chip g">顶层</span></div>
+      </div>
+    </div>
+
+    <p class="py-note reveal" data-d="2">※ 钱的方向只有一条：从下层的时间与劳动，流向上层的资本与稀缺。分层不看职业光鲜度，只看收入靠什么进来。</p>
+  </div>
+</section>
+
+<!-- ================= 四种命运 ================= -->
+<section id="fates" style="padding-top:0">
+  <div class="wrap">
+    <div class="eyebrow reveal">02 / Four Destinies</div>
+    <h2 class="title reveal" data-d="1">人分四种命运，<em>差别只在收入公式</em></h2>
+
+    <div class="dist reveal" data-d="2" id="dist">
+      <div class="dist-bar">
+        <div class="dist-seg s1" data-w="5">极少数</div>
+        <div class="dist-seg s2" data-w="10">≈10%</div>
+        <div class="dist-seg s3" data-w="85">&gt;85% · 卖时间</div>
+      </div>
+      <div class="dist-scale"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div>
+    </div>
+
+    <div class="fates">
+      <div class="fate stable reveal" data-d="1">
+        <span class="fmark">极少数 · 稳</span>
+        <div class="fk">Destiny 01</div>
+        <div class="fn">资源拥有者</div>
+        <div class="fm">LICENSE &amp; SCARCE</div>
+        <div class="fd">持有牌照、矿、地、渠道、独占权。<b>稀缺本身就是印钞机</b>，钱不需要经过任何人的劳动。</div>
+      </div>
+      <div class="fate stable reveal" data-d="2">
+        <span class="fmark">极少数 · 稳</span>
+        <div class="fk">Destiny 02</div>
+        <div class="fn">系统构建者</div>
+        <div class="fm">SYSTEM BUILDER</div>
+        <div class="fd">建造让钱和系统替自己工作的机器——企业、产品、网络。<b>建造一次，持续收割</b>。</div>
+      </div>
+      <div class="fate reveal" data-d="3">
+        <span class="fmark">≈10% · 有上限</span>
+        <div class="fk">Destiny 03</div>
+        <div class="fn">价值创造者</div>
+        <div class="fm">SELL RESULTS</div>
+        <div class="fd">卖成果而不是卖时间：一次交付，一份收入。<b>上限 = 成果单价 × 可复制的次数</b>，所以破层的关键是"可复制"。</div>
+      </div>
+      <div class="fate reveal" data-d="4">
+        <span class="fmark">&gt;85% · 可替代</span>
+        <div class="fk">Destiny 04</div>
+        <div class="fn">时间售卖者</div>
+        <div class="fm">SELL TIME</div>
+        <div class="fd">收入 = 时薪 × 时长，天花板是每天 24 小时。<b>停手就停收入</b>，且随时可能被更便宜的时间替代。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 三把锁 ================= -->
+<section id="locks" style="padding-top:0">
+  <div class="wrap">
+    <div class="eyebrow reveal">03 / Three Locks</div>
+    <h2 class="title reveal" data-d="1">困住普通人的，<em>不是能力，是三把锁</em></h2>
+    <p class="lede reveal" data-d="2">
+      债务、面子、恐惧——它们不锁住你的天赋，锁住的是<strong>试错的资格</strong>。
+      不砍锁，任何方法论都执行不下去。每一把锁都有对应的开锁动作。
+    </p>
+
+    <div class="locks">
+      <div class="lock-card reveal" data-d="1">
+        <svg class="lock-ico" viewBox="0 0 64 64">
+          <path class="shackle" d="M18,30 V19 a14,14 0 0 1 28,0 V30"/>
+          <rect class="body" x="12" y="30" width="40" height="26" rx="5"/>
+          <circle class="hole" cx="32" cy="40" r="4"/>
+          <rect class="hole" x="30.5" y="40" width="3" height="9" rx="1.5"/>
+        </svg>
+        <div class="lk-name">债务锁</div>
+        <div class="lk-desc">现金流先被利息吃掉，任何决策都先问"这个月怎么还"。不敢辞职、不敢等待、不敢试错。</div>
+        <div class="lock-arrow">▼ 砍法</div>
+        <div class="lk-cut"><span class="ax">→</span><span><b>断债</b>：先清高息负债，停止新增，把现金流归正。</span></div>
+      </div>
+      <div class="lock-card reveal" data-d="2">
+        <svg class="lock-ico" viewBox="0 0 64 64">
+          <path class="shackle" d="M18,30 V19 a14,14 0 0 1 28,0 V30"/>
+          <rect class="body" x="12" y="30" width="40" height="26" rx="5"/>
+          <circle class="hole" cx="32" cy="40" r="4"/>
+          <rect class="hole" x="30.5" y="40" width="3" height="9" rx="1.5"/>
+        </svg>
+        <div class="lk-name">面子锁</div>
+        <div class="lk-desc">用别人的评价做决策：怕被笑、怕"掉价"，于是不敢谈钱、不敢开口、不敢显得笨。</div>
+        <div class="lock-arrow">▼ 砍法</div>
+        <div class="lk-cut"><span class="ax">→</span><span><b>放脸</b>：用结果代替面子，把"别人怎么看我"换成"这件事有没有产出"。</span></div>
+      </div>
+      <div class="lock-card reveal" data-d="3">
+        <svg class="lock-ico" viewBox="0 0 64 64">
+          <path class="shackle" d="M18,30 V19 a14,14 0 0 1 28,0 V30"/>
+          <rect class="body" x="12" y="30" width="40" height="26" rx="5"/>
+          <circle class="hole" cx="32" cy="40" r="4"/>
+          <rect class="hole" x="30.5" y="40" width="3" height="9" rx="1.5"/>
+        </svg>
+        <div class="lk-name">恐惧锁</div>
+        <div class="lk-desc">把失败当成终点而不是数据，于是永远在准备、永远差一点、永远没开始。</div>
+        <div class="lock-arrow">▼ 砍法</div>
+        <div class="lk-cut"><span class="ax">→</span><span><b>治恐惧</b>：小成本试错，把"万一失败"变成"这次学到了什么"。</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 三条路 ================= -->
+<section id="paths" style="padding-top:0">
+  <div class="wrap">
+    <div class="eyebrow reveal">04 / Three Paths</div>
+    <h2 class="title reveal" data-d="1">砍完锁，<em>只有三条路可走</em></h2>
+    <p class="lede reveal" data-d="2">
+      解锁之后，普通人能走的路收敛为三条。它们的共同点：<strong>让收入与你的时间逐步脱钩</strong>——
+      前两条靠"复用"与"信任"，第三条靠"站上增量"。
+    </p>
+
+    <div class="flow-wrap reveal" data-d="2">
+      <div class="flow-head">
+        <h3>破局决策树 · Unlock → Path</h3>
+        <div class="tag">Flow Chart</div>
+      </div>
+      <div class="flow-scroll">
+        <svg viewBox="0 0 1000 400">
+          <!-- 连线 -->
+          <path class="flink" d="M160,178 C 230,178 240,64 296,64" marker-end="url(#arr)"/>
+          <path class="flink" d="M160,190 C 230,190 240,200 296,200" marker-end="url(#arr)"/>
+          <path class="flink" d="M160,202 C 230,202 240,336 296,336" marker-end="url(#arr)"/>
+          <path class="flink d1" d="M440,64 L470,64" marker-end="url(#arr)"/>
+          <path class="flink d1" d="M615,64 L645,64" marker-end="url(#arr)"/>
+          <path class="flink d2" d="M440,200 L470,200" marker-end="url(#arr)"/>
+          <path class="flink d2" d="M615,200 L645,200" marker-end="url(#arr)"/>
+          <path class="flink d3" d="M440,336 L470,336" marker-end="url(#arr)"/>
+          <path class="flink d3" d="M615,336 L645,336" marker-end="url(#arr)"/>
+
+          <g class="fnode root fl-mark"><rect x="30" y="163" width="130" height="54" rx="6"/><text x="95" y="187">解锁之后</text><text class="sub" x="95" y="204">LOCKS OFF</text></g>
+
+          <g class="fnode head fl-mark m1"><rect x="300" y="40" width="140" height="48" rx="6"/><text x="370" y="70">技能产品化</text></g>
+          <g class="fnode fl-mark m1"><rect x="475" y="40" width="140" height="48" rx="6"/><text x="545" y="70">做成产品</text></g>
+          <g class="fnode fl-mark m1"><rect x="650" y="40" width="140" height="48" rx="6"/><text x="720" y="63">一次创造</text><text class="sub" x="720" y="80">SELL N TIMES</text></g>
+          <g class="fnode fl-mark m1"><rect x="825" y="40" width="150" height="48" rx="6"/><text x="900" y="63">收入与时间脱钩</text><text class="sub" x="900" y="80">DECOUPLE</text></g>
+
+          <g class="fnode head fl-mark m2"><rect x="300" y="176" width="140" height="48" rx="6"/><text x="370" y="206">持续输出</text></g>
+          <g class="fnode fl-mark m2"><rect x="475" y="176" width="140" height="48" rx="6"/><text x="545" y="206">被看见 · 被信任</text></g>
+          <g class="fnode fl-mark m2"><rect x="650" y="176" width="140" height="48" rx="6"/><text x="720" y="206">机会主动上门</text></g>
+          <g class="fnode fl-mark m2"><rect x="825" y="176" width="150" height="48" rx="6"/><text x="900" y="199">信任资产</text><text class="sub" x="900" y="216">TRUST ASSET</text></g>
+
+          <g class="fnode head fl-mark m3"><rect x="300" y="312" width="140" height="48" rx="6"/><text x="370" y="342">上升赛道</text></g>
+          <g class="fnode fl-mark m3"><rect x="475" y="312" width="140" height="48" rx="6"/><text x="545" y="335">切增量 · 如 AI</text><text class="sub" x="545" y="352">NEW CURVE</text></g>
+          <g class="fnode fl-mark m3"><rect x="650" y="312" width="140" height="48" rx="6"/><text x="720" y="342">顺势水涨船高</text></g>
+          <g class="fnode fl-mark m3"><rect x="825" y="312" width="150" height="48" rx="6"/><text x="900" y="335">用杠杆放大</text><text class="sub" x="900" y="352">AMPLIFY</text></g>
+        </svg>
+      </div>
+      <div class="flow-note">※ 三条路不互斥：最优组合是"上升赛道里做技能产品化，同时持续输出攒信任"。顺序不能反——先砍锁，再上路。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 飞轮 ================= -->
+<section id="compound" style="padding-top:0">
+  <div class="wrap">
+    <div class="eyebrow reveal">05 / Compound</div>
+    <h2 class="title reveal" data-d="1">真落地，<em>是一个飞轮</em></h2>
+    <p class="lede reveal" data-d="2">
+      不是一次豪赌，而是一个每天转一圈的循环：<strong>做一点 → 拿反馈 → 改一版 → 资产加一</strong>。
+      转十圈看不出变化，转一千圈，就是别人眼里的"运气"。
+    </p>
+
+    <div class="fw2-grid">
+      <div class="fw2-fig reveal" data-d="2">
+        <svg viewBox="0 0 340 340">
+          <circle class="wheel-dash" cx="170" cy="170" r="118"/>
+          <circle cx="170" cy="170" r="118" fill="none" stroke="rgba(212,175,55,.18)" stroke-width="1"/>
+          <circle r="4" fill="#fbf0c9">
+            <animateMotion dur="9s" repeatCount="indefinite" path="M170,52 a118,118 0 1 1 -0.01,0"/>
+          </circle>
+          <g class="wheel-center">
+            <text x="170" y="164" font-size="22">日拱一卒</text>
+            <text x="170" y="188" font-size="10" font-family="var(--mono)" letter-spacing="3">DAILY COMPOUND</text>
+          </g>
+          <g class="wheel-node"><circle cx="170" cy="52" r="17"/><text x="170" y="57" font-size="11">01</text><text x="170" y="28" font-size="13.5">做一点 · 产出</text></g>
+          <g class="wheel-node"><circle cx="288" cy="170" r="17"/><text x="288" y="175" font-size="11">02</text><text x="300" y="150" font-size="13.5" text-anchor="start">拿到反馈</text></g>
+          <g class="wheel-node"><circle cx="170" cy="288" r="17"/><text x="170" y="293" font-size="11">03</text><text x="170" y="318" font-size="13.5">改进一版</text></g>
+          <g class="wheel-node"><circle cx="52" cy="170" r="17"/><text x="52" y="175" font-size="11">04</text><text x="40" y="150" font-size="13.5" text-anchor="end">资产 +1</text></g>
+        </svg>
+      </div>
+      <div class="principles reveal" data-d="3">
+        <div class="pr"><span class="no">01</span><div class="pt"><b>以天为单位</b><small>每天一个最小动作，只问"今天做了没有"，不问"有没有爆发"。</small></div></div>
+        <div class="pr"><span class="no">02</span><div class="pt"><b>以输出为记账</b><small>存款是钱，作品是复利。看得见的积累，才配叫资产。</small></div></div>
+        <div class="pr"><span class="no">03</span><div class="pt"><b>以资产为进度</b><small>衡量破层的不是工资涨幅，而是"睡着了还在增值的东西"多了多少。</small></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 引用 ================= -->
+<section class="quote-sec">
+  <div class="wrap">
+    <span class="quote-mark reveal">“</span>
+    <blockquote class="reveal" data-d="1">
+      破层的从来不是空喊努力，而是<em>先解锁，再日积月累</em>。
+    </blockquote>
+    <div class="quote-by reveal" data-d="2">Author · 911</div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div>
+        <div class="foot-lbl">Written &amp; Designed by</div>
+        <div class="foot-author">911</div>
+      </div>
+      <div class="foot-meta">
+        财富分层系列 · 第一篇<br />
+        六层金字塔 → 四种命运 → 三把锁 → 三条路 → 飞轮<br />
+        本文为逻辑推演与个人观点，不构成任何投资建议。
+      </div>
+    </div>
+    <div class="foot-div"></div>
+    <div class="foot-bottom">
+      <span>Pyramid · Locks · Three Paths · Compound</span>
+      <span>© 911 — All views are personal</span>
+    </div>
+  </div>
+</footer>
+<script>
+(function(){
+  'use strict';
+  const $ = (s,c)=> (c||document).querySelector(s);
+  const $$ = (s,c)=> Array.from((c||document).querySelectorAll(s));
+  const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- 1. Hero 金色流场 ---------- */
+  const cvs = $('#field');
+  if(cvs){
+    const ctx = cvs.getContext('2d');
+    let W = 0, H = 0, DPR = 1, particles = [], tt = 0, visible = true;
+    function field(x, y, t){
+      const a = Math.sin(x*0.0016 + t*0.22);
+      const b = Math.cos(y*0.0019 - t*0.17);
+      const c = Math.sin((x + y)*0.0011 + t*0.11);
+      return (a*b + c*0.75) * Math.PI * 1.9;
+    }
+    function spawn(){
+      return { x: Math.random()*W, y: Math.random()*H, px:0, py:0,
+        life: Math.random()*260, max: 180 + Math.random()*300,
+        sp: 0.45 + Math.random()*0.95, w: 0.4 + Math.random()*0.9 };
+    }
+    function resize(){
+      DPR = Math.min(window.devicePixelRatio || 1, 2);
+      const r = cvs.parentElement.getBoundingClientRect();
+      W = Math.max(1, Math.round(r.width)); H = Math.max(1, Math.round(r.height));
+      cvs.width = W*DPR; cvs.height = H*DPR;
+      cvs.style.width = W+'px'; cvs.style.height = H+'px';
+      ctx.setTransform(DPR,0,0,DPR,0,0);
+      ctx.fillStyle = '#0a0806'; ctx.fillRect(0,0,W,H);
+      const n = Math.min(400, Math.max(110, Math.round(W*H/5200)));
+      particles = new Array(n).fill(0).map(spawn);
+    }
+    function frame(){
+      requestAnimationFrame(frame);
+      if(!visible || REDUCE) return;
+      tt += 0.0055;
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.fillStyle = 'rgba(10,8,6,0.075)'; ctx.fillRect(0,0,W,H);
+      ctx.globalCompositeOperation = 'lighter';
+      for(let i=0;i<particles.length;i++){
+        const p = particles[i];
+        const ang = field(p.x, p.y, tt);
+        p.px = p.x; p.py = p.y;
+        p.x += Math.cos(ang) * p.sp * 1.6;
+        p.y += Math.sin(ang) * p.sp * 1.6;
+        p.life++;
+        if(p.life > p.max || p.x < -30 || p.x > W+30 || p.y < -30 || p.y > H+30){
+          Object.assign(p, spawn()); continue;
+        }
+        const a = Math.sin((p.life/p.max) * Math.PI) * 0.46;
+        ctx.strokeStyle = 'rgba(226,192,116,' + a.toFixed(3) + ')';
+        ctx.lineWidth = p.w;
+        ctx.beginPath(); ctx.moveTo(p.px, p.py); ctx.lineTo(p.x, p.y); ctx.stroke();
+      }
+    }
+    resize(); frame();
+    let rt;
+    window.addEventListener('resize', ()=>{ clearTimeout(rt); rt = setTimeout(resize, 180); });
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(es=>{ visible = es[0].isIntersecting; },{threshold:0.02}).observe($('.hero'));
+    }
+  }
+
+  /* ---------- 2. 鼠标金晕 ---------- */
+  const glow = $('#glow');
+  let gx=0, gy=0, cx=0, cy=0, gloop=false;
+  if(glow && window.matchMedia('(hover:hover)').matches){
+    window.addEventListener('mousemove', e=>{ gx=e.clientX; gy=e.clientY; if(!gloop){ gloop=true; requestAnimationFrame(gstep); } }, {passive:true});
+    function gstep(){
+      cx += (gx-cx)*0.09; cy += (gy-cy)*0.09;
+      glow.style.transform = 'translate(' + cx + 'px,' + cy + 'px) translate(-50%,-50%)';
+      if(Math.abs(gx-cx) > 0.4 || Math.abs(gy-cy) > 0.4){ requestAnimationFrame(gstep); } else { gloop = false; }
+    }
+  }
+
+  /* ---------- 3. 进度条 & 导航 ---------- */
+  const nav = $('#nav'), prog = $('#progress');
+  function onScroll(){
+    const y = window.scrollY || document.documentElement.scrollTop;
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    if(prog) prog.style.width = (h>0 ? Math.min(100, y/h*100) : 0) + '%';
+    if(nav) nav.classList.toggle('solid', y > 60);
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  /* ---------- 4. 入场动画 ---------- */
+  const io = new IntersectionObserver(entries=>{
+    entries.forEach(en=>{
+      if(!en.isIntersecting) return;
+      const el = en.target;
+      el.classList.add('in');
+      if(el.id === 'dist'){
+        $$('.dist-seg', el).forEach((s,i)=> setTimeout(()=>{ s.style.width = s.dataset.w + '%'; }, 150 + i*220));
+      }
+      io.unobserve(el);
+    });
+  }, {threshold:0.14, rootMargin:'0px 0px -6% 0px'});
+  $$('.reveal').forEach(el=>io.observe(el));
+
+  /* ---------- 5. 数字滚动 ---------- */
+  function countUp(el){
+    const target = parseFloat(el.dataset.count) || 0;
+    const dur = 1500, st = performance.now();
+    (function step(now){
+      const p = Math.min(1, (now-st)/dur);
+      const e = 1 - Math.pow(1-p, 3);
+      el.textContent = Math.round(target*e);
+      if(p < 1) requestAnimationFrame(step); else el.textContent = target;
+    })(st);
+  }
+  setTimeout(()=>{ $$('[data-count]').forEach(countUp); }, 900);
+
+  /* ---------- 6. 金字塔 ↔ 图例联动 ---------- */
+  const layers = $$('.py-layer'), rows = $$('.lg-row');
+  function hi(key, on){
+    layers.forEach(g=>{
+      const m = g.dataset.l === key;
+      g.classList.toggle('hl', on && m);
+      g.classList.toggle('dim', on && !m);
+    });
+    rows.forEach(r=> r.classList.toggle('hl', on && r.dataset.l === key));
+  }
+  layers.concat(rows).forEach(el=>{
+    const key = el.dataset.l;
+    el.addEventListener('mouseenter', ()=>hi(key, true));
+    el.addEventListener('mouseleave', ()=>hi(null, false));
+  });
+})();
+</script>
+</body>
+</html>
